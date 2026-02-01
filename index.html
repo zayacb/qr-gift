@@ -4,26 +4,44 @@
 <meta charset="UTF-8">
 <title>🎁</title>
 <style>
-  body {
-    font-family: system-ui, sans-serif;
-    text-align: center;
-    padding: 40px;
-  }
-  .wait { color: #c62828; font-size: 32px; }
-  .go { color: #2e7d32; font-size: 32px; }
-  .timer { font-size: 22px; margin-top: 20px; }
-  
-  .go {
-  color: #c2185b;
-  font-size: 36px;
-  font-weight: 600;
-  animation: pop 1s ease-in-out infinite alternate;
-  }
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  flex-direction: column; /* ← ВАЖНО */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  text-align: center;
+  padding: 24px;
+}
 
-  @keyframes pop {
-    from { transform: scale(1); }
-    to   { transform: scale(1.05); }
-  }
+
+#status {
+  font-size: clamp(36px, 8vw, 56px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#timer {
+  margin-top: 24px;
+  font-size: clamp(22px, 5.5vw, 32px);
+}
+
+.wait {
+  color: #c62828;
+}
+
+.go {
+  color: #c2185b;
+  animation: pop 1s ease-in-out infinite alternate;
+}
+
+@keyframes pop {
+  from { transform: scale(1); }
+  to   { transform: scale(1.05); }
+}
+
 
 </style>
 </head>
@@ -35,42 +53,38 @@
 <script>
 const target = new Date("2026-02-04T00:00:00");
 
+const status = document.getElementById("status");
+const timer = document.getElementById("timer");
+
 function update() {
   const now = new Date();
   const diff = target - now;
 
-  const status = document.getElementById("status");
-  const timer = document.getElementById("timer");
-
   if (diff > 0) {
     status.textContent = "❌ Пока не открывать";
     status.className = "wait";
-	
-	const d = Math.floor(diff / 86400000);
-	const h = Math.floor((diff % 86400000) / 3600000);
-	const m = Math.floor((diff % 3600000) / 60000);
-	const s = Math.floor((diff % 60000) / 1000);
 
-	timer.textContent = `Осталось: ${d} д ${h} ч ${m} мин ${s} сек`;
-	
-	const pad = n => String(n).padStart(2, "0");
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
 
-	timer.textContent =
-	  `Осталось: ${d} д ${pad(h)} ч ${pad(m)} мин ${pad(s)} сек`;
-	 
-	setInterval(update, 1000);
+    const pad = n => String(n).padStart(2, "0");
 
+    timer.textContent =
+      `Осталось: ${d} д ${pad(h)} ч ${pad(m)} мин ${pad(s)} сек`;
 
   } else {
-	  status.innerHTML = "🎉 С&nbsp;днём&nbsp;рождения! 🎉";
-	  status.className = "go";
-	  timer.innerHTML = "🎁 Самое время открыть подарок";
-	}
+    status.innerHTML = "🎉 С&nbsp;днём&nbsp;рождения! 🎉";
+    status.className = "go";
+    timer.innerHTML = "🎁 Самое время открыть подарок";
+  }
 }
 
 update();
-setInterval(update, 60000);
+setInterval(update, 1000);
 </script>
+
 
 </body>
 </html>
