@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>🎁</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    text-align: center;
+    padding: 40px;
+  }
+  .wait { color: #c62828; font-size: 32px; }
+  .go { color: #2e7d32; font-size: 32px; }
+  .timer { font-size: 22px; margin-top: 20px; }
+  
+  .go {
+  color: #c2185b;
+  font-size: 36px;
+  font-weight: 600;
+  animation: pop 1s ease-in-out infinite alternate;
+  }
+
+  @keyframes pop {
+    from { transform: scale(1); }
+    to   { transform: scale(1.05); }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="status"></div>
+<div id="timer" class="timer"></div>
+
+<script>
+const target = new Date("2026-02-04T00:00:00");
+
+function update() {
+  const now = new Date();
+  const diff = target - now;
+
+  const status = document.getElementById("status");
+  const timer = document.getElementById("timer");
+
+  if (diff > 0) {
+    status.textContent = "❌ Пока не открывать";
+    status.className = "wait";
+	
+	const d = Math.floor(diff / 86400000);
+	const h = Math.floor((diff % 86400000) / 3600000);
+	const m = Math.floor((diff % 3600000) / 60000);
+	const s = Math.floor((diff % 60000) / 1000);
+
+	timer.textContent = `Осталось: ${d} д ${h} ч ${m} мин ${s} сек`;
+	
+	const pad = n => String(n).padStart(2, "0");
+
+	timer.textContent =
+	  `Осталось: ${d} д ${pad(h)} ч ${pad(m)} мин ${pad(s)} сек`;
+	 
+	setInterval(update, 1000);
+
+
+  } else {
+	  status.innerHTML = "🎉 С&nbsp;днём&nbsp;рождения! 🎉";
+	  status.className = "go";
+	  timer.innerHTML = "🎁 Самое время открыть подарок";
+	}
+}
+
+update();
+setInterval(update, 60000);
+</script>
+
+</body>
+</html>
